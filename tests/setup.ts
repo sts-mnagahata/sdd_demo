@@ -1,8 +1,11 @@
 import { execSync } from 'child_process'
+import { existsSync, unlinkSync } from 'fs'
 import { prisma } from '../lib/prisma'
 
 beforeAll(() => {
-  execSync('npx prisma db push --skip-generate --force-reset', {
+  const testDb = 'prisma/test.db'
+  if (existsSync(testDb)) unlinkSync(testDb)
+  execSync('npx prisma db push --skip-generate', {
     stdio: 'inherit',
     env: process.env
   })
