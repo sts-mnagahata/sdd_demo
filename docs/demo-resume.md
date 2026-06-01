@@ -1,15 +1,15 @@
 # SDD+TDD デモ レジュメ（20分）
 
-> **当日の前提:** Claude Code CLI を端末に投影。`master` ブランチはスケルトン（Task 1〜6 完了済み）に戻してデモを開始する。
+> **当日の前提:** Claude Code CLI を端末に投影。`demo-start` ブランチから日付やイベント名でブランチを切ってデモを開始する。
 
 ---
 
 ## 事前チェック（デモ開始前）
 
 ```bash
-# スケルトン状態に戻す（Task 6完了のコミットまで）
-git checkout master
-git reset --hard be8bdfd   # feat: implement employee service layer (GREEN)
+# demo-start からデモ用ブランチを作成
+git checkout demo-start
+git checkout -b demo-20260610  # 日付やイベント名に変更
 npm install
 npx prisma db push
 npm test  # 6/6 PASS を確認
@@ -161,7 +161,7 @@ npm run dev
 |------|---------|
 | テスト実行 | `npm test` |
 | 開発サーバー起動 | `npm run dev` |
-| スケルトンに戻す | `git reset --hard be8bdfd` |
+| デモ用ブランチ作成 | `git checkout demo-start && git checkout -b demo-YYYYMMDD` |
 | 完成版に切替 | `git checkout demo-answer` |
 | 仕様書表示 | `cat docs/spec.md` |
 | 制約表示 | `cat AGENT.md` |
