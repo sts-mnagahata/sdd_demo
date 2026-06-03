@@ -11,8 +11,8 @@
 git checkout demo-start
 git checkout -b demo-20260610  # 日付やイベント名に変更
 
-# .env ファイルを作成（.gitignore 対象のため手動作成が必要）
-echo 'DATABASE_URL="file:./prisma/dev.db"' > .env
+# .env ファイルを作成（.gitignore 対象のため手動作成が必要 Powershellで実施）
+[System.IO.File]::WriteAllText("$PWD\.env", "DATABASE_URL=`"file:./prisma/dev.db`"`n")
 
 npm install
 npx prisma db push
