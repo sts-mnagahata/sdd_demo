@@ -1,10 +1,10 @@
 # AGENT.md - Claude Code 実装制約・コーディング規約
 
 ## 技術スタック
-- Next.js 15 (App Router)
-- Prisma + SQLite
-- Tailwind CSS + shadcn/ui
-- Vitest (APIインテグレーションテスト)
+- Next.js 16 (App Router / Turbopack)
+- Prisma 6.x + SQLite
+- Tailwind CSS
+- Vitest **^3.x**（4.x は ESM/CJS 互換性問題あり）
 
 ## 実装ルール
 
@@ -17,11 +17,20 @@
 ### Prisma
 - Prisma Clientは `lib/prisma.ts` のシングルトン経由のみ使用
 - 各ファイルで `new PrismaClient()` を直接作成しないこと
+- `prisma/schema.prisma` の generator は **`provider = "prisma-client-js"`** を使用すること
+  - `provider = "prisma-client"`（TypeScript 新ジェネレーター）は Turbopack とパス解決が非互換
+  - カスタム `output` は指定しない（`node_modules/@prisma/client` に生成する）
+- `lib/prisma.ts` の import は **`from '@prisma/client'`** とすること
+- `next.config.ts` に **`serverExternalPackages: ['@prisma/client']`** を必ず設定すること
+  - これがないと Turbopack が Prisma クライアントをバンドルし SQLite DB が見つからなくなる
 
 ### テスト
 - テスト対象は `lib/employees.ts` のサービス層関数のみ
 - APIルートのテスト・UIテストはスコープ外
 - テストDB: `prisma/test.db`（本番DBと分離）
+- `tests/setup.ts` の `prisma db push` に **`--force-reset` を使用しないこと**
+  - Claude Code（AI）から実行すると Prisma の安全チェックでブロックされテストが全スキップになる
+  - 代わりに `beforeAll` 内で `prisma.employee.deleteMany()` でクリーンアップする
 
 ### コード規約
 - TypeScript strict mode

@@ -10,14 +10,30 @@
 # demo-start からデモ用ブランチを作成
 git checkout demo-start
 git checkout -b demo-20260610  # 日付やイベント名に変更
+
+# .env ファイルを作成（.gitignore 対象のため手動作成が必要）
+echo 'DATABASE_URL="file:./prisma/dev.db"' > .env
+
 npm install
 npx prisma db push
 npm test  # 6/6 PASS を確認
+npm run dev  # ブラウザで http://localhost:3000 が開くことを確認してから停止
 ```
 
+- [ ] `.env` ファイルが作成されていること（`DATABASE_URL` が設定されていること）
+- [ ] `npm test` で 6/6 PASS を確認済み
+- [ ] `npm run dev` でトップページが `/employees` にリダイレクトされることを確認済み
 - [ ] ブラウザを閉じておく
 - [ ] ターミナル文字サイズを大きく（聴衆が見やすいよう）
 - [ ] `demo-answer` ブランチが GitHub にある（フォールバック用）
+
+### よくある事前チェックのエラーと対処
+
+| エラー | 原因 | 対処 |
+|---|---|---|
+| `DATABASE_URL not found` | `.env` がない | `echo 'DATABASE_URL="file:./prisma/dev.db"' > .env` |
+| `npm test` が全スキップ | `--force-reset` ブロック | `tests/setup.ts` を確認（`deleteMany()` 方式になっているか） |
+| API が 500 エラー | Turbopack + Prisma 設定不備 | `next.config.ts` に `serverExternalPackages: ['@prisma/client']` があるか確認 |
 
 ---
 
