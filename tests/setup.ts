@@ -1,11 +1,12 @@
 import { execSync } from 'child_process'
 import { prisma } from '../lib/prisma'
 
-beforeAll(() => {
-  execSync('npx prisma db push --skip-generate --force-reset', {
+beforeAll(async () => {
+  execSync('npx prisma db push --skip-generate', {
     stdio: 'inherit',
     env: process.env
   })
+  await prisma.employee.deleteMany()
 })
 
 afterEach(async () => {
