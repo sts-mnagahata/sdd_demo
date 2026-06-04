@@ -42,3 +42,7 @@
 - Server Actions
 - UIテスト（Playwright等）
 - 外部API連携
+
+## AI作業スタイル
+- ビジュアルコンパニオン（ブラウザでのモックアップ表示）の提案は不要
+- UI実装時は brainstorming の clarifying questions を省略し、仕様書に従い直接実装すること
